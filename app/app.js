@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
 });
 
 // Route for fetching donation data from the database
-app.get('/db_donations', async (req, res) => {
+app.get('/donations', async (req, res) => {
     try {
         const sql = 'SELECT * FROM donations';
         const results = await db.query(sql);
@@ -26,9 +26,9 @@ app.get('/db_donations', async (req, res) => {
 });
 
 // Route for fetching swap items from the database
-app.get('/swap-items', async (req, res) => {
+app.get('/swap_items', async (req, res) => {
     try {
-        const sql = 'SELECT * FROM swaps';  // Modify the query based on your database structure
+        const sql = 'SELECT * FROM swaps_items';  // Modify the query based on your database structure
         const results = await db.query(sql);
         res.json(results);
     } catch (error) {
