@@ -5,23 +5,79 @@ const db = require('../services/db');
 const router = express.Router();
 
 // user registration API
-router.post('/register', async (req, res) => {
-    const { username, email, password } = req.body;
+router.post('/login', async (req, res) => {
+    const { email, password } = req.body;
 
-    if (!username || !email || !password) {
-        return res.status(400).json({ error: 'all fields are required' });
+    if (!email || !password) {
+        return res.status(400).json({ error: "email and password are required" });
     }
 
     try {
-        const hashedPassword = await bcrypt.hash(password, 10);
-        await db.query(
-            "INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)",
-            [username, email, hashedPassword]
-        );
-        res.status(201).json({ message: "registration successful" });
+        const users = await db.query("SELECT * FROM users WHERE email = ?", [email]);
+
+        if (users.length === 0) {
+            return res.status(401).json({ error: "user not found" });
+        }
+
+        const user = users[0];
+
+        // check if account is frozen
+        if (user.is_frozen) {
+            return res.status(403).json({ error: "this account is frozen and cannot log in" });
+        }
+
+        const isPasswordValid = await bcrypt.compare(password, user.password_hash);
+        if (!isPasswordValid) {
+            return res.status(401).json({ error: "incorrect password" });
+        }
+
+        res.status(200).json({
+            message: "login successful",
+            user_id: user.id,
+            role: user.role
+        });
     } catch (error) {
-        res.status(500).json({ error: "registration failed: " + error.message });
+        res.status(500).json({ error: "login failed: " + error.message });
     }
 });
+
+// admin can freeze/unfreeze users.
+router.put('/freeze/:id', async (req, res) => {
+    const { admin_id } = req.body; // admin making the request
+
+    // check if requester is admin
+    const adminCheck = await db.query("SELECT role FROM users WHERE id = ?", [admin_id]);
+    if (adminCheck.length === 0 || adminCheck[0].role !== 'admin') {
+        return res.status(403).json({ error: "only admins can freeze/unfreeze accounts" });
+    }
+
+    try {
+        await db.query("UPDATE users SET is_frozen = NOT is_frozen WHERE id = ?", [req.params.id]);
+        res.status(200).json({ message: "account status updated" });
+    } catch (error) {
+        res.status(500).json({ error: "failed to update account status: " + error.message });
+    }
+});
+
+
+// admin can delete users.
+router.delete('/delete/:id', async (req, res) => {
+    const { admin_id } = req.body; // admin making the request
+
+    // check if requester is admin
+    const adminCheck = await db.query("SELECT role FROM users WHERE id = ?", [admin_id]);
+    if (adminCheck.length === 0 || adminCheck[0].role !== 'admin') {
+        return res.status(403).json({ error: "only admins can delete user accounts" });
+    }
+
+    try {
+        await db.query("DELETE FROM users WHERE id = ?", [req.params.id]);
+        res.status(200).json({ message: "user deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ error: "failed to delete user: " + error.message });
+    }
+});
+
+
 
 module.exports = router;
