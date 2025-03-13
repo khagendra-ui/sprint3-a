@@ -35,6 +35,8 @@ CREATE TABLE users (
     email VARCHAR(100) NOT NULL UNIQUE, -- unique email address
     password_hash VARCHAR(255) NOT NULL, -- encrypted password
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- account creation time
+    ALTER TABLE users ADD COLUMN points INT DEFAULT 0; -- score
+
 );
 
 -- create clothes table
@@ -100,6 +102,16 @@ CREATE TABLE `test_table` (
   `id` int NOT NULL,
   `name` varchar(512) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- create points table
+CREATE TABLE user_points (
+    user_id INT PRIMARY KEY, -- User ID (Foreign Key)
+    points INT DEFAULT 0, -- Accumulated points
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+
 
 --
 -- Dumping data for table `test_table`
