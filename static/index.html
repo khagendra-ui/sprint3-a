@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circular Fashion</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Main Content Page -->
+    <div id="mainPage" class="main-container">
+        <header>
+            <img src="logo.png" alt="Circular Fashion Logo" class="logo">
+            <h1 class="title">CIRCULAR-FASHION</h1>
+            <nav>
+                <ul>
+                    <li><a href="#" id="reviewBtn">Review</a></li>
+                    <li><a href="#" id="contactBtn">Contact Us</a></li>
+                    <li><a href="#" id="reportBtn">Report</a></li>
+                    <li><a href="#" id="profileBtn">Profile</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <div class="main-container">
+            <div class="menu">
+                <button class="btn green" id="donateBtn">DONATE</button>
+                <button class="btn green" id="borrowBtn">BORROW</button>
+                <button class="btn green" id="swapBtn">SWAP</button>
+            </div>
+
+            <div class="description">
+                <p class="styled-text">
+                    <b>Elevate your style with <br>
+                        Circular Fashion – <br>
+                        where fashion meets confidence. <br>
+                        Discover premium-quality, <br>
+                        trendsetting apparel designed <br>
+                        for every occasion. <br>
+                        Shop now and redefine your wardrobe with <br>
+                        timeless elegance and modern flair!</b>
+                </p>
+            </div>
+
+            <!-- Donation Modal -->
+            <div id="donateModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" id="closeDonate">&times;</span>
+                    <h2>Donate Your Item</h2>
+                    <form id="donationForm" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="donorName">Your Name:</label>
+                            <input type="text" id="donorName" name="donorName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="itemCategory">Item Category:</label>
+                            <select id="itemCategory" name="itemCategory" required>
+                                <option value="clothes">Clothes</option>
+                                <option value="shoes">Shoes</option>
+                                <option value="accessories">Accessories</option>
+                                <option value="bags">Bags</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="itemColor">Item Color:</label>
+                            <input type="text" id="itemColor" name="itemColor" placeholder="e.g. Red, Blue, etc." required>
+                        </div>
+                        <div class="form-group">
+                            <label for="itemCondition">Item Condition:</label>
+                            <select id="itemCondition" name="itemCondition" required>
+                                <option value="new">New</option>
+                                <option value="gentlyUsed">Gently Used</option>
+                                <option value="wornOut">Worn Out</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="donationMessage">Additional Message:</label>
+                            <textarea id="donationMessage" name="donationMessage" placeholder="Any additional message (optional)"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="itemImage">Upload Image:</label>
+                            <input type="file" id="itemImage" name="itemImage" accept="image/*" required>
+                            <div id="imagePreviewContainer">
+                                <img id="imagePreview" src="" alt="Image Preview" />
+                            </div>
+                        </div>
+                        <button type="submit">Submit Donation</button>
+                        <button type="button" id="backBtn" class="btn red">Back to Menu</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Confirmation Modal for Donation -->
+            <div id="confirmationModal" class="modal">
+                <div class="modal-content">
+                    <h2>Thank You for Donating!</h2>
+                    <p>What would you like to do with the item?</p>
+                    <button id="donateFreeBtn" class="btn green">Donate Free</button>
+                    <button id="swapBtn" class="btn green">Swap</button>
+                    <button class="close" id="closeConfirmation">&times;</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modals for Review, Contact Us, Report, Profile -->
+        <div id="reviewModal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="closeReview">&times;</span>
+                <h2>Leave a Review</h2>
+                <form id="reviewForm">
+                    <div class="form-group">
+                        <label for="reviewText">Your Review:</label>
+                        <textarea id="reviewText" name="reviewText" required></textarea>
+                    </div>
+                    <button type="submit">Submit Review</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="contactModal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="closeContact">&times;</span>
+                <h2>Contact Us</h2>
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="contactName">Your Name:</label>
+                        <input type="text" id="contactName" name="contactName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactMessage">Message:</label>
+                        <textarea id="contactMessage" name="contactMessage" required></textarea>
+                    </div>
+                    <button type="submit">Send Message</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="reportModal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="closeReport">&times;</span>
+                <h2>Report an Issue</h2>
+                <form id="reportForm">
+                    <div class="form-group">
+                        <label for="reportType">Issue Type:</label>
+                        <select id="reportType" name="reportType" required>
+                            <option value="bug">Bug</option>
+                            <option value="abuse">Abuse</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="reportDescription">Description:</label>
+                        <textarea id="reportDescription" name="reportDescription" required></textarea>
+                    </div>
+                    <button type="submit">Submit Report</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="profilePage" class="modal">
+            <div class="modal-content">
+                <span class="close" id="closeProfile">&times;</span>
+                <h2>Your Profile</h2>
+                <div>
+                    <p><strong>Name:</strong> <span id="userName">John Doe</span></p>
+                    <p><strong>Email:</strong> <span id="userEmail">john.doe@example.com</span></p>
+                    <p><strong>Donated Items:</strong> <span id="donatedItems">5</span></p>
+                    <button id="editProfileBtn">Edit Profile</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Donation Modal
+        document.getElementById('donateBtn').addEventListener('click', function () {
+            document.getElementById('donateModal').style.display = 'block';
+        });
+        document.getElementById('closeDonate').addEventListener('click', function () {
+            document.getElementById('donateModal').style.display = 'none';
+        });
+        document.getElementById('backBtn').addEventListener('click', function () {
+            document.getElementById('donateModal').style.display = 'none';
+        });
+
+        document.getElementById('donationForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            document.getElementById('donateModal').style.display = 'none';
+            document.getElementById('confirmationModal').style.display = 'block';
+        });
+
+        document.getElementById('closeConfirmation').addEventListener('click', function () {
+            document.getElementById('confirmationModal').style.display = 'none';
+        });
+        document.getElementById('donateFreeBtn').addEventListener('click', function () {
+            alert("You chose to donate the item for free.");
+        });
+        document.getElementById('swapBtn').addEventListener('click', function () {
+            alert("You chose to swap the item.");
+        });
+
+        // Review Modal
+        document.getElementById('reviewBtn').addEventListener('click', function () {
+            document.getElementById('reviewModal').style.display = 'block';
+        });
+        document.getElementById('closeReview').addEventListener('click', function () {
+            document.getElementById('reviewModal').style.display = 'none';
+        });
+        document.getElementById('reviewForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            alert('Thank you for your review!');
+            document.getElementById('reviewModal').style.display = 'none';
+        });
+
+        // Contact Us Modal
+        document.getElementById('contactBtn').addEventListener('click', function () {
+            document.getElementById('contactModal').style.display = 'block';
+        });
+        document.getElementById('closeContact').addEventListener('click', function () {
+            document.getElementById('contactModal').style.display = 'none';
+        });
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            alert('Your message has been sent!');
+            document.getElementById('contactModal').style.display = 'none';
+        });
+
+        // Report Modal
+        document.getElementById('reportBtn').addEventListener('click', function () {
+            document.getElementById('reportModal').style.display = 'block';
+        });
+        document.getElementById('closeReport').addEventListener('click', function () {
+            document.getElementById('reportModal').style.display = 'none';
+        });
+        document.getElementById('reportForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            alert('Your report has been submitted!');
+            document.getElementById('reportModal').style.display = 'none';
+        });
+
+        // Profile Modal
+        document.getElementById('profileBtn').addEventListener('click', function () {
+            document.getElementById('profilePage').style.display = 'block';
+        });
+        document.getElementById('closeProfile').addEventListener('click', function () {
+            document.getElementById('profilePage').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
