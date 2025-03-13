@@ -1,7 +1,21 @@
 /* Global Styles (unchanged) */
 .title {
-    color: rgba(232, 42, 42, 0.958); /* Make the title text color green */
+    color: rgba(42, 181, 232, 0.958);
+    font-size: 48px; /* Adjusted font size */
+    font-weight: bold;
+    text-transform: uppercase;
+    flex-grow: 1;
+    text-align: center;
+    margin-left: -50px;
+    letter-spacing: 4px;
 }
+
+.highlight {
+    background-color: #90EE90; /* Light green background */
+    padding: 10px 20px; /* Adds some padding around the text */
+    border-radius: 5px; /* Optional: rounded corners */
+}
+
 nav ul li a {
     color: rgb(127, 32, 228); /* Change link color to white */
     text-decoration: none; /* Remove underline from links if you want */
@@ -29,9 +43,16 @@ body {
 }
 
 .styled-text {
-    color: rgb(57, 39, 255);  /* Make the text yellow */
-
+    color: rgb(251, 251, 251); /* Yellow Text */
+    font-size: 14px; /* Increase font size */
+    font-weight: bold; /* Make the text bold */
+    line-height: 1.5; /* Adjust line height for better spacing */
+    text-transform: uppercase; /* Optional: Transform text to uppercase */
+    letter-spacing: 2px; /* Optional: Add spacing between letters */
+    text-align: center; /* Center align the text */
+    padding: 10px; /* Add padding for some space around the text */
 }
+
 
 /* Styles for Login Page */
 .login-container {
