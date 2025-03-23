@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Mar 23, 2025 at 12:38 PM
+-- Generation Time: Mar 23, 2025 at 08:29 PM
 -- Server version: 9.2.0
 -- PHP Version: 8.2.27
 
@@ -77,6 +77,34 @@ INSERT INTO `SwapItems` (`item_id`, `itemName`, `category`, `color`, `condition`
 (4, 'Wireless Earbuds', 'Accessories', 'White', 'New', 'High-quality wireless earbuds for music lovers.', './image/earbud.jpeg', 'Bluetooth Speaker', '2025-03-23 00:02:21', '2025-03-23 00:47:19'),
 (5, 'Casual Watch', 'Accessories', 'Silver', 'Used', 'A classic silver casual watch with a leather strap.', './image/watch.jpeg', 'Sports Watch', '2025-03-23 00:02:21', '2025-03-23 00:47:39');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Users`
+--
+
+CREATE TABLE `Users` (
+  `UserID` int NOT NULL,
+  `Username` varchar(255) NOT NULL,
+  `Password` varchar(255) NOT NULL,
+  `FullName` varchar(255) DEFAULT NULL,
+  `Role` enum('Admin','Customer') DEFAULT 'Customer',
+  `Email` varchar(255) NOT NULL,
+  `LastLogin` datetime DEFAULT NULL,
+  `CreatedAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `Users`
+--
+
+INSERT INTO `Users` (`UserID`, `Username`, `Password`, `FullName`, `Role`, `Email`, `LastLogin`, `CreatedAt`) VALUES
+(1, 'john.doe@example.com', 'password123', 'John Doe', 'Customer', 'john.doe@example.com', '2025-03-21 14:35:00', '2025-03-23 19:41:37'),
+(2, 'jane.smith@example.com', 'adminpass', 'Jane Smith', 'Admin', 'jane.smith@example.com', '2025-03-22 08:20:12', '2025-03-23 19:41:37'),
+(3, 'alex.jones@example.com', 'alexpassword', 'Alex Jones', 'Customer', 'alex.jones@example.com', '2025-03-22 16:47:58', '2025-03-23 19:41:37'),
+(4, 'emily.brown@example.com', 'mypassword', 'Emily Brown', 'Customer', 'emily.brown@example.com', '2025-03-21 11:15:34', '2025-03-23 19:41:37'),
+(5, 'robert.white@example.com', 'robert123', 'Robert White', 'Admin', 'robert.white@example.com', '2025-03-23 10:09:07', '2025-03-23 19:41:37');
+
 --
 -- Indexes for dumped tables
 --
@@ -94,6 +122,14 @@ ALTER TABLE `SwapItems`
   ADD PRIMARY KEY (`item_id`);
 
 --
+-- Indexes for table `Users`
+--
+ALTER TABLE `Users`
+  ADD PRIMARY KEY (`UserID`),
+  ADD UNIQUE KEY `Username` (`Username`),
+  ADD UNIQUE KEY `Email` (`Email`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -108,6 +144,12 @@ ALTER TABLE `donations`
 --
 ALTER TABLE `SwapItems`
   MODIFY `item_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `Users`
+--
+ALTER TABLE `Users`
+  MODIFY `UserID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
