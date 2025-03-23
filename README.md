@@ -1,58 +1,63 @@
-# MySQL, PHPMyAdmin and Node.js (ready for Express development)
+Circular fashion platform
+Team Name: Backlog Bashers
+Team Members:
+Daohan Zhou
+Khagendra prasad thakur
+Bipin Thapa
+📌 Project Description
+Overview
+Our project is a Clothing Exchange, Borrow, and Donation platform. It allows users to swap, donate, or borrow clothing items, promoting sustainable fashion and reducing waste.
 
-This will install Mysql and phpmyadmin (including all dependencies to run Phpmyadmin) AND node.js
+🔹 Features
+User Registration - Users can create accounts to join the platform.
+User Login - Secure authentication to access the platform.
+Item Management - Users can list, browse, and manage available clothing items categorized for swap, donation, or borrowing.
+Logout - Users can securely log out.
+User-Friendly Interface - The application dynamically updates based on user interactions.
+🛠️ Technologies Used
+Frontend
+HTML
+CSS
+JavaScript
+Backend
+Node.js
+Express.js
+Database
+MySQL (Using PHPMyAdmin for database management)
+Project Management
+GitHub Projects (Kanban board)
+Other Tools
+Docker
+📝 Code of Conduct
+All members will respect each other's opinions and ensure a supportive environment.
+Weekly project discussions will take place during lab sessions.
+Each member is responsible for their assigned tasks and must update the Kanban board accordingly.
+All code must be properly commented and pushed to GitHub regularly.
+Any disagreements will be resolved through discussions.
+🎭 User Personas
+Persona 1: Donator
+Name: Haku Kale
+Demographics:
 
-This receipe is for development - Node.js is run in using supervisor: changes to any file in the app will trigger a rebuild automatically.
+Age: 34
+Gender: Male
+Occupation: Graphic Designer
+Goals:
 
-For security, this receipe uses a .env file for credentials.  A sample is provided in the env-sample file. If using these files for a fresh project, copy the env-sample file to a file called .env.  Do NOT commit the changed .env file into your new project for security reasons (in the node package its included in .gitignore so you can't anyway)
+Donate clothes that are in good condition to those in need.
+Exchange items for something more suitable for his style.
+Free up closet space while helping the environment.
+Frustrations:
 
-In node.js, we use the MySQl2 packages (to avoid problems with MySQL8) and the dotenv package to read the environment variables.
+Unreliable borrowers who don't return items on time.
+Worries about not reaching the right audience for donations.
+Wishes:
 
-Local files are mounted into the container using the 'volumes' directive in the docker-compose.yml for ease of development.
+A platform where he can easily list items for donation, borrowing, or swapping.
+Notifications when someone is interested in his items.
+A community focused on sustainability and fair exchanges.
+📌 Scenario:
+Haku recently moved and is cleaning out his closet. He has several gently used shirts that no longer fit his style. He logs into the app and lists them under donation, feeling good about contributing to sustainability. Additionally, he sees a jacket he likes in the swap section and arranges to exchange one of his shirts for it.
 
-### Super-quickstart your new project:
-
-* Make sure that you don't have any other containers running usind docker ps
-* run ```docker-compose up --build```
-
-#### Visit phphmyadmin at:
-
-http://localhost:8081/
-
-#### Visit your express app at:
-
-http://localhost:3000
-
-For reference, see the video at: https://roehampton.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=6f290a6b-ba94-4729-9632-adcf00ac336e
-
-NB if you are running this on your own computer rather than the azure labs that has been set up for you, you will need to install the following:
-
-* node.js  (windows: https://nodejs.org/en/download/)
-* docker desktop (for windows, this will also prompt you to install linux subsystem for windows https://docs.docker.com/desktop/windows/install/ )
-
-### Whats provided in these scaffolding files?
-
-
-  * A docker setup which will provide you with node.js, mysql and phpmyadmin, including the configuration needed so that both node.js AND phpmyadmin can 'see' and connect to your mysql database.  If you don't use docker you'll have to set up and connect each of these components separately.
-  * A basic starting file structure for a node.js app.
-  * A package.json file that will pull in the node.js libraries required and start your app as needed.
-  * A db.js file which provides all the code needed to connect to the mysql database, using the credentials in the .env file, and which provides a query() function that can send queries to the database and receive a result.  In order to use this (ie. interact with the database, you simply need to include this file in any file you create that needs this database interaction) with the following code:
-
-```const db = require('./services/db');
-```
-
-____
-
-Useful commands:
-
-Get a shell in any of the containers
-
-```bash
-docker exec -it <container name> bash -l
-```
-
-Once in the database container, you can get a MySQL CLI in the usual way
-
-```bash
-mysql -uroot -p<password> 
-```
+Features :
+ al the way to go from the basic feature from donation, borrow to a swap feature where a modal to repot bug: Cannot POST /donate

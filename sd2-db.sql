@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Oct 30, 2022 at 09:54 AM
--- Server version: 8.0.24
--- PHP Version: 7.4.20
+-- Generation Time: Mar 23, 2025 at 12:38 PM
+-- Server version: 9.2.0
+-- PHP Version: 8.2.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -23,111 +23,91 @@ SET time_zone = "+00:00";
 
 -- --------------------------------------------------------
 
-
--- create database
-CREATE DATABASE clothes_platform;
-USE clothes_platform;
-
--- create users table
-CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) NOT NULL UNIQUE, -- unique username
-    email VARCHAR(100) NOT NULL UNIQUE, -- unique email address
-    password_hash VARCHAR(255) NOT NULL, -- encrypted password
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- account creation time
-);
-
--- create clothes table
-CREATE TABLE clothes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL, -- the user who posted this clothing item
-    name VARCHAR(100) NOT NULL, -- clothing name (e.g., "Adidas sweatshirt")
-    description TEXT, -- clothing description
-    image_url VARCHAR(255), -- url of the clothing image
-    price DECIMAL(10,2) DEFAULT 0.00, -- price, 0 means donation
-    shipping_fee DECIMAL(10,2) DEFAULT 0.00, -- shipping fee
-    delivery_method ENUM('shipping', 'pickup', 'no_delivery') NOT NULL, -- delivery method
-    status ENUM('available', 'borrowed', 'sold', 'donated') DEFAULT 'available', -- current status of the clothing item
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- time when the item was posted
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE -- if the user is deleted, delete their clothing items
-);
-
--- create transactions table
-CREATE TABLE transactions (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    clothes_id INT NOT NULL, -- clothing item involved in the transaction
-    seller_id INT, -- seller (null if it's a donation)
-    buyer_id INT NOT NULL, -- buyer or borrower
-    transaction_type ENUM('purchase', 'borrow', 'donation') NOT NULL, -- type of transaction
-    amount DECIMAL(10,2) DEFAULT 0.00, -- transaction amount
-    shipping_fee DECIMAL(10,2) DEFAULT 0.00, -- shipping fee
-    delivery_method ENUM('shipping', 'pickup', 'no_delivery') NOT NULL, -- delivery method
-    transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- date of the transaction
-    FOREIGN KEY (clothes_id) REFERENCES clothes(id) ON DELETE CASCADE, -- if the clothing item is deleted, delete transaction records
-    FOREIGN KEY (seller_id) REFERENCES users(id) ON DELETE SET NULL, -- if the seller is deleted, keep transaction records but set seller to null
-    FOREIGN KEY (buyer_id) REFERENCES users(id) ON DELETE CASCADE -- if the buyer is deleted, delete transaction records
-);
-
--- create borrow records table
-CREATE TABLE borrows (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    clothes_id INT NOT NULL, -- clothing item that is borrowed
-    borrower_id INT NOT NULL, -- user who borrowed the clothing item
-    borrow_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- date when the clothing item was borrowed
-    return_date TIMESTAMP NULL, -- date when the clothing item was returned (null if not returned yet)
-    status ENUM('borrowed', 'returned') DEFAULT 'borrowed', -- current status of the borrow record
-    FOREIGN KEY (clothes_id) REFERENCES clothes(id) ON DELETE CASCADE, -- if the clothing item is deleted, delete borrow records
-    FOREIGN KEY (borrower_id) REFERENCES users(id) ON DELETE CASCADE -- if the borrower is deleted, delete borrow records
-);
-
--- create cart table
-CREATE TABLE cart (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL, -- user who added the clothing item to the cart
-    clothes_id INT NOT NULL, -- clothing item added to the cart
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- time when the item was added to the cart
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE, -- if the user is deleted, delete their cart items
-    FOREIGN KEY (clothes_id) REFERENCES clothes(id) ON DELETE CASCADE -- if the clothing item is deleted, remove it from all carts
-);
-
-
-
 --
--- Table structure for table `test_table`
+-- Table structure for table `donations`
 --
 
-CREATE TABLE `test_table` (
+CREATE TABLE `donations` (
   `id` int NOT NULL,
-  `name` varchar(512) NOT NULL
+  `donorName` varchar(255) NOT NULL,
+  `itemCategory` enum('clothes','shoes','accessories','bags') NOT NULL,
+  `itemColor` varchar(100) NOT NULL,
+  `itemCondition` enum('new','good','used') NOT NULL,
+  `itemImage` varchar(255) NOT NULL,
+  `donationDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `test_table`
+-- Dumping data for table `donations`
 --
 
-INSERT INTO `test_table` (`id`, `name`) VALUES
-(1, 'Lisa'),
-(2, 'Kimia');
+INSERT INTO `donations` (`id`, `donorName`, `itemCategory`, `itemColor`, `itemCondition`, `itemImage`, `donationDate`) VALUES
+(1, 'John Doe', 'clothes', 'Red', 'new', './image/red.jpg', '2025-03-22 14:06:55'),
+(2, 'Jane Smith', 'shoes', 'Black', 'good', './image/black_shoes.jpeg', '2025-03-22 14:06:55'),
+(3, 'Alice Johnson', 'accessories', 'Gold', 'used', './image/gold_ring.jpeg', '2025-03-22 14:06:55'),
+(4, 'Bob Brown', 'bags', 'Brown', 'new', './image/bag.jpeg', '2025-03-22 14:06:55');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `SwapItems`
+--
+
+CREATE TABLE `SwapItems` (
+  `item_id` int NOT NULL,
+  `itemName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `category` varchar(100) NOT NULL,
+  `color` varchar(50) NOT NULL,
+  `condition` varchar(50) NOT NULL,
+  `description` text NOT NULL,
+  `itemImage` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `swapwith` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `SwapItems`
+--
+
+INSERT INTO `SwapItems` (`item_id`, `itemName`, `category`, `color`, `condition`, `description`, `itemImage`, `swapwith`, `created_at`, `updated_at`) VALUES
+(1, 'Black Hoodie', 'Clothes', 'Black', 'New', 'A stylish black hoodie, perfect for winter.', './image/black.jpeg', 'Red Sneakers', '2025-03-23 00:02:21', '2025-03-23 00:45:14'),
+(2, 'Running Shoes', 'Shoes', 'Blue', 'Good', 'Comfortable running shoes for any athlete.', './image/blue.jpeg', 'Sports Bag', '2025-03-23 00:02:21', '2025-03-23 00:45:25'),
+(3, 'Vintage Leather Jacket', 'Clothes', 'Brown', 'Excellent', 'A vintage leather jacket, durable and stylish.', './image/brownjacket.jpeg', 'Casual Shirt', '2025-03-23 00:02:21', '2025-03-23 00:46:57'),
+(4, 'Wireless Earbuds', 'Accessories', 'White', 'New', 'High-quality wireless earbuds for music lovers.', './image/earbud.jpeg', 'Bluetooth Speaker', '2025-03-23 00:02:21', '2025-03-23 00:47:19'),
+(5, 'Casual Watch', 'Accessories', 'Silver', 'Used', 'A classic silver casual watch with a leather strap.', './image/watch.jpeg', 'Sports Watch', '2025-03-23 00:02:21', '2025-03-23 00:47:39');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `test_table`
+-- Indexes for table `donations`
 --
-ALTER TABLE `test_table`
+ALTER TABLE `donations`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `SwapItems`
+--
+ALTER TABLE `SwapItems`
+  ADD PRIMARY KEY (`item_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `test_table`
+-- AUTO_INCREMENT for table `donations`
 --
-ALTER TABLE `test_table`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `donations`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `SwapItems`
+--
+ALTER TABLE `SwapItems`
+  MODIFY `item_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
