@@ -10,7 +10,7 @@
           th Color
           th Condition
           th Description
-          th Image 
+          th Image
           th Swapwith
       tbody
         each item in swapItems  // Loop through the data passed from the server
@@ -20,8 +20,11 @@
             td= item.color
             td= item.condition
             td= item.description
+            td
+              // Render image if it exists, otherwise show a placeholder or empty cell
+              if item.itemImage
+                img(src=item.itemImage, alt='Item Image', width="100", height="100")
+              else
+                p No Image Available
             td= item.swapwith
-            td= 
-            img(src=item.image alt='Item Image' width="100" height="100")  // Display image if available
-            td= item.swapwith
-    button#closeSwapModal.btn.red(type="button")
+    button#closeSwapModal.btn.red(type="button") Close
