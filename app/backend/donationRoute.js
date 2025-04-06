@@ -26,7 +26,7 @@ router.post('/donate', upload.single('itemImage'), async (req, res) => {
   }
 
   try {
-    const imagePath = `static/image/${req.file.filename}`;
+    const imagePath = `./image/${req.file.filename}`;
 
     const insertQuery = `
       INSERT INTO donations (donorName, itemCategory, itemColor, itemCondition, itemImage)
