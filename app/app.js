@@ -102,6 +102,32 @@ app.post("/submit-rating", (req, res) => {
     });
 });
 
+// POST /send-message
+app.post("/send-message", async (req, res) => {
+  const senderId = req.session.user?.UserID;
+  const { receiverName, message } = req.body;
+
+  if (!senderId || !receiverName || !message) {
+    return res.status(400).send("Missing required fields");
+  }
+
+  try {
+    const [receiver] = await db.query("SELECT UserID FROM users WHERE FullName = ?", [receiverName]);
+    if (!receiver) {
+      return res.status(404).send("Receiver not found");
+    }
+
+    await db.query(
+      "INSERT INTO messages (sender_id, receiver_id, message) VALUES (?, ?, ?)",
+      [senderId, receiver.UserID, message]
+    );
+
+    res.redirect("/messages");
+  } catch (err) {
+    console.error("Error sending message:", err);
+    res.status(500).send("Failed to send message");
+  }
+});
 
 
 // ===== Error Handling =====

@@ -16,7 +16,7 @@ html(lang="en")
             li: a(href="#", id="contactBtn") Contact Us
             li: a(href="#", id="reportBtn") Report
             li: a(href="#", id="profileBtn") Profile
-
+            //- li: a(href="#", id="messageBtn") Message
             
       .main-container
         .menu
@@ -151,7 +151,7 @@ html(lang="en")
                 label(for="reportMessage") Describe the Issue:
                 textarea#reportMessage(name="reportMessage", required)
               button.btn.green(type="submit") Submit Report
-            button#closeReportModal.btn.red(type="button") Clos
+            button#closeReportModal.btn.red(type="button") Close
         // Rating Modal
 #ratingModal.modal
   .modal-content
@@ -168,6 +168,19 @@ html(lang="en")
         textarea#message(name="message", required)
       button.btn.green(type="submit") Submit Rating
     button#closeRatingModal.btn.red(type="button") Close
+//-       //- // Message Modal
+//- #messageModal.modal
+//-   .modal-content
+//-     h2 Send a Message
+//-     form#messageForm(method="POST", action="/send-message")
+//-       .form-group
+//-         label(for="receiverName") Receiver Full Name:
+//-         input(type="text", name="receiverName", required)
+//-       .form-group
+//-         label(for="message") Message:
+//-         textarea(name="message", required)
+//-       button.btn.green(type="submit") Send
+//-     button#closeMessageModal.btn.red(type="button") Close
 
             
                //- All your existing content 
@@ -194,6 +207,8 @@ script.
     setupModal("contactBtn", "contactModal", "closeContactModal");
     setupModal("reportBtn", "reportModal", "closeReportModal");
     setupModal("ratingBtn", "ratingModal", "closeRatingModal");
+    setupModal("messageBtn", "messageModal", "closeMessageModal");
+
 
     const donationList = document.getElementById("donationList");
 

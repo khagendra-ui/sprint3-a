@@ -1,0 +1,15 @@
+doctype html
+html
+  head
+    title Your Messages
+    link(rel="stylesheet", href="/style.css")
+  body
+    h1 Messages Received
+    ul
+      each msg in messages
+        li
+          strong= msg.senderName
+          |  wrote on 
+          em= new Date(msg.timestamp).toLocaleString()
+          p= msg.message
+    a(href="/index") Back to Home
