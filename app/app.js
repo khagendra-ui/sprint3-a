@@ -90,14 +90,18 @@ app.get("/donations", function(req, res) {
 // post the rating 
 app.post("/submit-rating", (req, res) => {
   const { stars, message } = req.body;
-  const sql = "INSERT INTO ratings (stars, message) VALUES (?, ?)";
-  db.query(sql, [stars, message])
+  const user_name = req.session.user?.FullName || "Anonymous";
+
+  const sql = "INSERT INTO ratings (user_name, stars, message) VALUES (?, ?, ?)";
+
+  db.query(sql, [user_name, stars, message])
     .then(() => res.redirect('/index'))
     .catch(err => {
       console.error("Error saving rating:", err);
       res.status(500).send("Failed to submit rating");
     });
 });
+
 
 
 // ===== Error Handling =====
