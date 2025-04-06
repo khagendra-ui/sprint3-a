@@ -97,21 +97,24 @@ html(lang="en")
               tbody
             button#closeSwapModal.btn.red(type="button") Close
 
-        // Profile Modal
-#profileModal.modal
-  .modal-content
-    h2 Your Profile
-    if user
-      p
-        strong Name: 
-        | #{user.FullName}
-      p
-        strong Email: 
-        | #{user.Email}
-      a.btn.red(href="/logout") Log Out
-    else
-      p You are not logged in.
-    button#closeProfileModal.btn.red(type="button") back to menu
+    // Profile Modal (Corrected)
+    #profileModal.modal
+      .modal-content
+        h2 Your Profile
+        if user
+          p
+            strong Name: 
+            | #{user.FullName}
+          p
+            strong Email: 
+            | #{user.Email}
+          a.btn.red(href="/logout") Log Out
+        else
+          p You are not logged in.
+
+        button#closeProfileModal.btn.red(type="button") back to menu
+
+
 
 
         // Contact Us Modal
@@ -148,21 +151,23 @@ html(lang="en")
                 label(for="reportMessage") Describe the Issue:
                 textarea#reportMessage(name="reportMessage", required)
               button.btn.green(type="submit") Submit Report
-            button#closeReportModal.btn.red(type="button") Close
-
-    //- All your existing content (untouched)
-
+            button#closeReportModal.btn.red(type="button") Clos
+            
+               //- All your existing content (untouched)
 script.
-  document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener("DOMContentLoaded", function() {
+    // Modal Setup
     function setupModal(buttonId, modalId, closeBtnId) {
       const button = document.getElementById(buttonId);
       const modal = document.getElementById(modalId);
       const closeButton = document.getElementById(closeBtnId);
 
-      if (button && modal && closeButton) {
-        button.addEventListener("click", () => modal.style.display = "block");
-        closeButton.addEventListener("click", () => modal.style.display = "none");
-      }
+      button.addEventListener("click", function() {
+        modal.style.display = "block";
+      });
+      closeButton.addEventListener("click", function() {
+        modal.style.display = "none";
+      });
     }
 
     setupModal("donateBtn", "donateModal", "closeDonateModal");
@@ -172,86 +177,74 @@ script.
     setupModal("contactBtn", "contactModal", "closeContactModal");
     setupModal("reportBtn", "reportModal", "closeReportModal");
 
-    // ✅ Filter donation list by category
-    document.getElementById("applyFilterBtn")?.addEventListener("click", function () {
-      const selectedCategory = document.getElementById("categoryFilter").value;
+    const donationList = document.getElementById("donationList");
 
-      fetch(`/donations?category=${selectedCategory}`)
+    // Fetch donations with optional filter
+    function fetchDonations(category = "") {
+      let url = "/donations";
+      if (category) url += "?category=" + encodeURIComponent(category);
+
+      fetch(url)
         .then(response => response.json())
         .then(data => {
-          const donationList = document.getElementById("donationList");
-          donationList.innerHTML = "";
-
-          if (data.length > 0) {
-            data.forEach(donation => {
-              const donationItem = document.createElement("div");
-              donationItem.innerHTML = `
-                <p><b><strong>Donor:</strong> ${donation.donorName}</b></p>
-                <p><strong>Category:</strong> ${donation.itemCategory}</p>
-                <p><strong>Colour:</strong> ${donation.itemColor}</p>
-                <p><strong>Condition:</strong> ${donation.itemCondition}</p>
-                <p><strong>Image:</strong><br><img src="${donation.itemImage}" width="200"></p>
-              `;
-              donationList.appendChild(donationItem);
-            });
-          } else {
-            donationList.innerHTML = "<p>No donations found for this category.</p>";
-          }
-        })
-        .catch(error => console.error("Error filtering donations:", error));
-    });
-
-    // 🔁 Existing donation fetch (untouched)
-    document.getElementById("borrowBtn").addEventListener("click", function () {
-      fetch("/donations")
-        .then(response => response.json())
-        .then(data => {
-          const donationList = document.getElementById("donationList");
           donationList.innerHTML = "";
           if (data.length > 0) {
-            data.forEach(donation => {
+            data.forEach(function(donation) {
               const donationItem = document.createElement("div");
-              donationItem.innerHTML = `
-                <p><b><strong>Donor:</strong> ${donation.donorName}</b></p>
-                <p><strong>Category:</strong> ${donation.itemCategory}</p>
-                <p><strong>Colour:</strong> ${donation.itemColor}</p>
-                <p><strong>Condition:</strong> ${donation.itemCondition}</p>
-                <p><strong>Image:</strong><br><img src="${donation.itemImage}" width="200"></p>
-              `;
+              donationItem.innerHTML =
+                '<p><strong>Donor:</strong> ' + donation.donorName + '</p>' +
+                '<p><strong>Category:</strong> ' + donation.itemCategory + '</p>' +
+                '<p><strong>Color:</strong> ' + donation.itemColor + '</p>' +
+                '<p><strong>Condition:</strong> ' + donation.itemCondition + '</p>' +
+                '<p><strong>Image:</strong><br><img src="' + donation.itemImage + '" width="200"></p><hr>';
               donationList.appendChild(donationItem);
             });
           } else {
             donationList.innerHTML = "<p>No donations available.</p>";
           }
         })
-        .catch(error => console.error("Error fetching donations:", error));
+        .catch(function(error) {
+          console.error("Error fetching donations:", error);
+        });
+    }
+
+    // Initial fetch when Borrow modal opens
+    document.getElementById("borrowBtn").addEventListener("click", function() {
+      fetchDonations();
     });
 
-    // 🔁 Existing swap fetch (untouched)
-    document.getElementById("swapBtn").addEventListener("click", function () {
-      fetch("/swapItems")
+    // Apply filter functionality
+    document.getElementById("applyFilterBtn").addEventListener("click", function() {
+      const selectedCategory = document.getElementById("categoryFilter").value;
+      fetchDonations(selectedCategory);
+    });
+
+    // Fetch swap items dynamically
+    document.getElementById("swapBtn").addEventListener("click", function() {
+      fetch("/SwapItems")
         .then(response => response.json())
         .then(data => {
           const swapTableBody = document.querySelector("#swapTable tbody");
           swapTableBody.innerHTML = "";
           if (data.length > 0) {
-            data.forEach(item => {
+            data.forEach(function(item) {
               const row = document.createElement("tr");
-              row.innerHTML = `
-                <td><b>${item.itemName}</b></td>
-                <td>${item.category}</td>
-                <td>${item.color}</td>
-                <td>${item.condition}</td>
-                <td>${item.description}</td>
-                <td><img src="${item.itemImage}" alt="${item.itemName}" width="100"></td>
-                <td>${item.swapwith}</td>
-              `;
+              row.innerHTML =
+                '<td>' + item.itemName + '</td>' +
+                '<td>' + item.category + '</td>' +
+                '<td>' + item.color + '</td>' +
+                '<td>' + item.condition + '</td>' +
+                '<td>' + item.description + '</td>' +
+                '<td><img src="' + item.itemImage + '" alt="' + item.itemName + '" width="100"></td>' +
+                '<td>' + item.swapwith + '</td>';
               swapTableBody.appendChild(row);
             });
           } else {
-            swapTableBody.innerHTML = "<tr><td colspan='4'>No swap items available.</td></tr>";
+            swapTableBody.innerHTML = "<tr><td colspan='7'>No swap items available.</td></tr>";
           }
         })
-        .catch(error => console.error("Error fetching swap items:", error));
+        .catch(function(error) {
+          console.error("Error fetching swap items:", error);
+        });
     });
   });

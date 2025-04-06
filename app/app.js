@@ -76,7 +76,7 @@ app.get("/donations", function(req, res) {
   let params = [];
 
   if (category) {
-    sql = 'SELECT * FROM donations WHERE item_category = ?';
+    sql = 'SELECT * FROM donations WHERE itemCategory = ?';
     params.push(category);
   }
 
