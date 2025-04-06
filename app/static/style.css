@@ -361,3 +361,26 @@ nav ul li a {
 .initial-badge:hover {
   background-color: #d32f2f;
 }
+.stars {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: start;
+    gap: 10px;
+  }
+  
+  .stars input[type="radio"] {
+    display: none;
+  }
+  
+  .stars label {
+    font-size: 24px;
+    color: gray;
+    cursor: pointer;
+  }
+  
+  .stars input[type="radio"]:checked ~ label,
+  .stars label:hover,
+  .stars label:hover ~ label {
+    color: gold;
+  }
+  

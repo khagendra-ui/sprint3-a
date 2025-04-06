@@ -12,7 +12,7 @@ html(lang="en")
         h1.title CIRCULAR-FASHION
         nav
           ul
-            li: a(href="#", id="reviewBtn") Review
+            li: a(href="#", id="ratingBtn") Rate Us
             li: a(href="#", id="contactBtn") Contact Us
             li: a(href="#", id="reportBtn") Report
             li: a(href="#", id="profileBtn") Profile
@@ -152,6 +152,23 @@ html(lang="en")
                 textarea#reportMessage(name="reportMessage", required)
               button.btn.green(type="submit") Submit Report
             button#closeReportModal.btn.red(type="button") Clos
+        // Rating Modal
+#ratingModal.modal
+  .modal-content
+    h2 Rate Our Website
+    form#ratingForm(method="POST", action="/submit-rating")
+      .form-group
+        label(for="stars") Select Rating:
+        .stars
+          - for (let i = 5; i >= 1; i--)
+            input(type="radio", name="stars", id=`star${i}`, value=i, required)
+            label(for=`star${i}`)= `${i}★`
+      .form-group
+        label(for="message") Message:
+        textarea#message(name="message", required)
+      button.btn.green(type="submit") Submit Rating
+    button#closeRatingModal.btn.red(type="button") Close
+
             
                //- All your existing content (untouched)
 script.
@@ -176,6 +193,7 @@ script.
     setupModal("profileBtn", "profileModal", "closeProfileModal");
     setupModal("contactBtn", "contactModal", "closeContactModal");
     setupModal("reportBtn", "reportModal", "closeReportModal");
+    setupModal("ratingBtn", "ratingModal", "closeRatingModal");
 
     const donationList = document.getElementById("donationList");
 

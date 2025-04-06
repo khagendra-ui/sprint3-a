@@ -87,6 +87,17 @@ app.get("/donations", function(req, res) {
       res.status(500).send("Server error");
     });
 });
+// post the rating 
+app.post("/submit-rating", (req, res) => {
+  const { stars, message } = req.body;
+  const sql = "INSERT INTO ratings (stars, message) VALUES (?, ?)";
+  db.query(sql, [stars, message])
+    .then(() => res.redirect('/index'))
+    .catch(err => {
+      console.error("Error saving rating:", err);
+      res.status(500).send("Failed to submit rating");
+    });
+});
 
 
 // ===== Error Handling =====
