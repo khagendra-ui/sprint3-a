@@ -73,12 +73,25 @@ html(lang="en")
               button#closeDonateModal.btn.red(type="button") Close
               
 
-        // Borrow Items Modal
-        #borrowModal.modal
-          .modal-content
-            h2 Available Donations
-            #donationList
-            button#closeBorrowModal.btn.red(type="button") Close
+        // Borrow Items Modal with Category Filter
+#borrowModal.modal
+  .modal-content
+    h2 Available Donations
+
+    label(for="categoryFilter") Filter by Category:
+    select#categoryFilter
+      option(value="") All
+      option(value="clothes") Clothes
+      option(value="shoes") Shoes
+      option(value="accessories") Accessories
+      option(value="bags") Bags
+
+    button#applyFilterBtn.btn.green(type="button") Apply Filter
+
+    #donationList
+
+    button#closeBorrowModal.btn.red(type="button") Close
+
 
         // Swap Items Modal
         #swapModal.modal
@@ -109,7 +122,7 @@ html(lang="en")
       a.btn.red(href="/logout") Log Out
     else
       p You are not logged in.
-    button#closeProfileModal.btn.red(type="button") Close
+    button#closeProfileModal.btn.red(type="button") back to menu
 
 
         // Contact Us Modal

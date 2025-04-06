@@ -10,6 +10,7 @@ const app = express();
 // ===== View engine setup =====
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
+app.use('/static', express.static(path.join(__dirname, 'app/static')));
 
 // ===== Middleware =====
 app.use(express.static(path.join(__dirname, 'static')));
@@ -69,16 +70,23 @@ app.get('/home', (req, res) => {
   }
   res.render('index', { user: req.session.user });
 });
-// Create a route for testing the db
 app.get("/donations", function(req, res) {
-    // Assumes a table called test_table exists in your database
-    sql = 'select * from donations';
-    db.query(sql).then(results => {
-        console.log(results);
-        res.send(results)
+  const category = req.query.category;
+  let sql = 'SELECT * FROM donations';
+  let params = [];
+
+  if (category) {
+    sql = 'SELECT * FROM donations WHERE item_category = ?';
+    params.push(category);
+  }
+
+  db.query(sql, params)
+    .then(results => res.json(results))
+    .catch(err => {
+      console.error("Database error:", err);
+      res.status(500).send("Server error");
     });
 });
-
 
 
 // ===== Error Handling =====
