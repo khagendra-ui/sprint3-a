@@ -168,7 +168,7 @@ html(lang="en")
         textarea#message(name="message", required)
       button.btn.green(type="submit") Submit Rating
     button#closeRatingModal.btn.red(type="button") Close
-//-       //- // Message Modal
+      // Message Modal
 //- #messageModal.modal
 //-   .modal-content
 //-     h2 Send a Message
@@ -207,7 +207,7 @@ script.
     setupModal("contactBtn", "contactModal", "closeContactModal");
     setupModal("reportBtn", "reportModal", "closeReportModal");
     setupModal("ratingBtn", "ratingModal", "closeRatingModal");
-    setupModal("messageBtn", "messageModal", "closeMessageModal");
+    //- setupModal("messageBtn", "messageModal", "closeMessageModal");
 
 
     const donationList = document.getElementById("donationList");
